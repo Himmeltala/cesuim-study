@@ -26,6 +26,7 @@ export default defineConfig({
       wrapperClasses: "markdown-body",
     }),
   ],
+  assetsInclude: ['**/*.glb', '**/*.gltf'],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

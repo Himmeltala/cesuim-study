@@ -14,7 +14,6 @@
         background-color="#304156"
         text-color="#bfcbd9"
         active-text-color="#409EFF"
-        unique-opened
       >
         <!-- 动态生成菜单 -->
         <template v-for="group in groupedRoutes" :key="group.key">

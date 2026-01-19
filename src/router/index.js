@@ -79,6 +79,16 @@ const routes = [
           mdPath: "chapter02/entities/circle-spiral-entity.md",
         },
       },
+      {
+        path: "chapter03/camera-lookat",
+        name: "CameraLookAt",
+        component: () => import("@/views/chapter03/CameraLookAt.vue"),
+        meta: {
+          title: "相机 LookAt",
+          chapter: "第三章：相机控制",
+          mdPath: "chapter03/camera-lookat.md",
+        },
+      },
     ],
   },
   {
