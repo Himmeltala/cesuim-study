@@ -41,7 +41,7 @@ const entity = viewer.entities.add({
     // 跟随地球曲率
     arcType: Cesium.ArcType.GEODESIC,
   },
-});
+})
 ```
 
 ## 折线属性详解
@@ -60,8 +60,8 @@ const entity = viewer.entities.add({
 ### 纯色材质
 
 ```javascript
-entity.polyline.material = Cesium.Color.RED;
-entity.polyline.material = Cesium.Color.BLUE.withAlpha(0.5);
+entity.polyline.material = Cesium.Color.RED
+entity.polyline.material = Cesium.Color.BLUE.withAlpha(0.5)
 ```
 
 ### 渐变材质
@@ -70,7 +70,7 @@ entity.polyline.material = Cesium.Color.BLUE.withAlpha(0.5);
 entity.polyline.material = new Cesium.PolylineGlowMaterialProperty({
   glowPower: 0.2,
   color: Cesium.Color.RED,
-});
+})
 ```
 
 ### 虚线材质
@@ -81,7 +81,7 @@ entity.polyline.material = new Cesium.PolylineDashMaterialProperty({
   dashLength: 16,
   gapColor: Cesium.Color.TRANSPARENT,
   dashPattern: 255, // 二进制：11111111
-});
+})
 ```
 
 ### 链环材质
@@ -90,7 +90,7 @@ entity.polyline.material = new Cesium.PolylineDashMaterialProperty({
 entity.polyline.material = new Cesium.PolylineChainLinkMaterialProperty({
   color: Cesium.Color.CYAN,
   lengthRatio: 0.5,
-});
+})
 ```
 
 ## 贴地折线
@@ -104,7 +104,7 @@ const entity = viewer.entities.add({
     material: Cesium.Color.RED,
     clampToGround: true, // 贴地
   },
-});
+})
 
 // 方式二：使用 heightReference
 const entity2 = viewer.entities.add({
@@ -116,20 +116,20 @@ const entity2 = viewer.entities.add({
     material: Cesium.Color.BLUE,
     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
   },
-});
+})
 ```
 
 ## 弧线类型
 
 ```javascript
 // 大圆航线（测地线）- 默认
-entity.polyline.arcType = Cesium.ArcType.GEODESIC;
+entity.polyline.arcType = Cesium.ArcType.GEODESIC
 
 // 恒向线（罗盘方向）
-entity.polyline.arcType = Cesium.ArcType.RHUMB;
+entity.polyline.arcType = Cesium.ArcType.RHUMB
 
 // 直线（不跟随地球曲率）
-entity.polyline.arcType = Cesium.ArcType.NONE;
+entity.polyline.arcType = Cesium.ArcType.NONE
 ```
 
 ## 批量添加折线
@@ -137,7 +137,7 @@ entity.polyline.arcType = Cesium.ArcType.NONE;
 ```javascript
 const routes = [
   {
-    name: "京沪线",
+    name: '京沪线',
     color: Cesium.Color.RED,
     coordinates: [
       [116.4, 39.9],
@@ -145,17 +145,17 @@ const routes = [
     ],
   },
   {
-    name: "京广线",
+    name: '京广线',
     color: Cesium.Color.BLUE,
     coordinates: [
       [116.4, 39.9],
       [113.3, 23.1],
     ],
   },
-];
+]
 
-routes.forEach((route) => {
-  const positions = route.coordinates.flatMap((coord) => coord);
+routes.forEach(route => {
+  const positions = route.coordinates.flatMap(coord => coord)
 
   viewer.entities.add({
     name: route.name,
@@ -165,27 +165,27 @@ routes.forEach((route) => {
       material: route.color,
       clampToGround: true,
     },
-  });
-});
+  })
+})
 ```
 
 ## 交互与事件
 
 ```javascript
 // 监听折线点击
-const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
 
 handler.setInputAction(function (movement) {
-  const picked = viewer.scene.pick(movement.position);
+  const picked = viewer.scene.pick(movement.position)
 
   if (Cesium.defined(picked) && picked.id && picked.id.polyline) {
-    const entity = picked.id;
-    console.log("点击的折线:", entity.name);
+    const entity = picked.id
+    console.log('点击的折线:', entity.name)
 
     // 高亮显示
-    entity.polyline.material = Cesium.Color.YELLOW;
+    entity.polyline.material = Cesium.Color.YELLOW
   }
-}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 ```
 
 > 使用 `clampToGround: true` 时，线会自动跟随地形起伏，适合表示道路、河流等自然地物。

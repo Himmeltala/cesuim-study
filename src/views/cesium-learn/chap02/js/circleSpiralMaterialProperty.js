@@ -1,53 +1,59 @@
-import * as Cesium from "cesium";
+import * as Cesium from 'cesium'
 
 class CircleSpiralMaterialProperty {
-    constructor(options) {
-        this._definitionChanged = new Cesium.Event();
-        this._color = undefined;
-        this._speed = undefined;
-        this.color = options.color;
-        this.speed = options.speed;
-    };
+  constructor(options) {
+    this._definitionChanged = new Cesium.Event()
+    this._color = undefined
+    this._speed = undefined
+    this.color = options.color
+    this.speed = options.speed
+  }
 
+  get isConstant() {
+    return false
+  }
 
-    get isConstant() {
-        return false;
+  get definitionChanged() {
+    return this._definitionChanged
+  }
+
+  getType() {
+    return 'CircleSpiralMaterialType'
+  }
+
+  getValue(time, result) {
+    if (!Cesium.defined(result)) {
+      result = {}
     }
 
+    result.color = Cesium.Property.getValueOrDefault(
+      this._color,
+      time,
+      Cesium.Color.RED,
+      result.color,
+    )
+    result.speed = Cesium.Property.getValueOrDefault(
+      this._speed,
+      time,
+      10,
+      result.speed,
+    )
+    return result
+  }
 
-    get definitionChanged() {
-        return this._definitionChanged;
-    }
-
-
-    getType() {
-        return 'CircleSpiralMaterialType';
-    }
-
-
-    getValue(time, result) {
-        if (!Cesium.defined(result)) {
-            result = {};
-        }
-
-        result.color = Cesium.Property.getValueOrDefault(this._color, time, Cesium.Color.RED, result.color);
-        result.speed = Cesium.Property.getValueOrDefault(this._speed, time, 10, result.speed);
-        return result
-    }
-
-
-    equals(other) {
-        return (this === other ||
-            (other instanceof CircleSpiralMaterialProperty &&
-                Cesium.Property.equals(this._color, other._color) &&
-                Cesium.Property.equals(this._speed, other._speed))
-        )
-    }
+  equals(other) {
+    return (
+      this === other ||
+      (other instanceof CircleSpiralMaterialProperty &&
+        Cesium.Property.equals(this._color, other._color) &&
+        Cesium.Property.equals(this._speed, other._speed))
+    )
+  }
 }
 
 Object.defineProperties(CircleSpiralMaterialProperty.prototype, {
-    color: Cesium.createPropertyDescriptor('color'),
-    speed: Cesium.createPropertyDescriptor('speed')
+  color: Cesium.createPropertyDescriptor('color'),
+  speed: Cesium.createPropertyDescriptor('speed'),
 })
 
 const circleSpiralMaterialSource = `
@@ -76,17 +82,17 @@ const circleSpiralMaterialSource = `
 `
 
 Cesium.Material._materialCache.addMaterial('CircleSpiralMaterialType', {
-    fabric: {
-        type: 'CircleSpiralMaterialType',
-        uniforms: {
-            color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
-            speed: 10.0
-        },
-        source: circleSpiralMaterialSource
+  fabric: {
+    type: 'CircleSpiralMaterialType',
+    uniforms: {
+      color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
+      speed: 10.0,
     },
-    translucent: function(material) {
-        return true;
-    }
+    source: circleSpiralMaterialSource,
+  },
+  translucent: function (material) {
+    return true
+  },
 })
 
-export default CircleSpiralMaterialProperty;
+export default CircleSpiralMaterialProperty

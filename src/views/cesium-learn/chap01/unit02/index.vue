@@ -54,11 +54,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from "vue";
-import * as Cesium from "cesium";
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-const cesiumContainer = ref(null);
-let viewer = null;
+import * as Cesium from 'cesium'
+
+const cesiumContainer = ref(null)
+let viewer = null
 
 // 配置状态
 const config = reactive({
@@ -67,53 +68,53 @@ const config = reactive({
   homeButton: true,
   sceneModePicker: true,
   navigationHelpButton: true,
-});
+})
 
 // 更新配置
 const updateConfig = () => {
-  if (!viewer) return;
+  if (!viewer) return
 
   // 动态更新控件可见性
-  viewer.baseLayerPicker = config.baseLayerPicker;
-  viewer.geocoder = config.geocoder;
-  viewer.homeButton = config.homeButton;
-  viewer.sceneModePicker = config.sceneModePicker;
-  viewer.navigationHelpButton = config.navigationHelpButton;
-};
+  viewer.baseLayerPicker = config.baseLayerPicker
+  viewer.geocoder = config.geocoder
+  viewer.homeButton = config.homeButton
+  viewer.sceneModePicker = config.sceneModePicker
+  viewer.navigationHelpButton = config.navigationHelpButton
+}
 
 // 重建 Viewer
 const recreateViewer = () => {
   if (viewer) {
-    viewer.destroy();
-    viewer = null;
+    viewer.destroy()
+    viewer = null
   }
 
   viewer = new Cesium.Viewer(cesiumContainer.value, {
     animation: false,
     timeline: false,
     ...config,
-  });
-};
+  })
+}
 
 onMounted(() => {
   viewer = new Cesium.Viewer(cesiumContainer.value, {
     animation: false,
     timeline: false,
     ...config,
-  });
+  })
 
   // 飞向默认位置
   viewer.camera.flyTo({
     destination: Cesium.Cartesian3.fromDegrees(116.4, 39.9, 500000),
-  });
-});
+  })
+})
 
 onUnmounted(() => {
   if (viewer) {
-    viewer.destroy();
-    viewer = null;
+    viewer.destroy()
+    viewer = null
   }
-});
+})
 </script>
 
 <style scoped>

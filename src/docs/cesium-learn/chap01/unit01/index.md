@@ -17,13 +17,13 @@
 ### 2. 引入 Cesium
 
 ```javascript
-import * as Cesium from "cesium";
+import * as Cesium from 'cesium'
 ```
 
 ### 3. 初始化 Viewer
 
 ```javascript
-const viewer = new Cesium.Viewer("cesiumContainer", {
+const viewer = new Cesium.Viewer('cesiumContainer', {
   // 配置选项
   animation: false, // 隐藏动画控件
   timeline: false, // 隐藏时间线
@@ -34,7 +34,7 @@ const viewer = new Cesium.Viewer("cesiumContainer", {
   homeButton: true, // 归位按钮
   sceneModePicker: true, // 场景模式选择器
   navigationHelpButton: true, // 导航帮助
-});
+})
 ```
 
 ### 4. flyTo
@@ -77,12 +77,13 @@ API 文档：[Camera.flyTo](https://cesium.xin/cesium/cn/Documentation1.62/Camer
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import * as Cesium from "cesium";
-import { Location, Aim, Refresh } from "@element-plus/icons-vue";
+import { onMounted, onUnmounted, ref } from 'vue'
 
-const cesiumContainer = ref(null);
-let viewer = null;
+import { Aim, Location, Refresh } from '@element-plus/icons-vue'
+import * as Cesium from 'cesium'
+
+const cesiumContainer = ref(null)
+let viewer = null
 
 // 飞向中国
 const flyToChina = () => {
@@ -94,21 +95,21 @@ const flyToChina = () => {
       pitch: Cesium.Math.toRadians(-90),
       roll: 0,
     },
-  });
-};
+  })
+}
 
 // 飞向全球
 const flyToWorld = () => {
   viewer.camera.flyTo({
     destination: Cesium.Cartesian3.fromDegrees(0, 0, 20000000),
     duration: 3,
-  });
-};
+  })
+}
 
 // 重置视图
 const resetView = () => {
-  viewer.camera.flyHome(3);
-};
+  viewer.camera.flyHome(3)
+}
 
 onMounted(() => {
   // 初始化 Cesium Viewer
@@ -123,18 +124,18 @@ onMounted(() => {
     homeButton: true, // 归位按钮
     sceneModePicker: true, // 场景模式选择器
     navigationHelpButton: true, // 导航帮助
-  });
+  })
 
   // 飞向初始位置
-  flyToChina();
-});
+  flyToChina()
+})
 
 onUnmounted(() => {
   if (viewer) {
-    viewer.destroy();
-    viewer = null;
+    viewer.destroy()
+    viewer = null
   }
-});
+})
 </script>
 
 <style scoped>

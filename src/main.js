@@ -1,14 +1,17 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
-import "element-plus/theme-chalk/dark/css-vars.css";
-import "cesium/Build/Cesium/Widgets/widgets.css";
-import "./style.scss";
+import { createApp } from 'vue'
 
-const app = createApp(App);
+import ElementPlus from 'element-plus'
 
-app.use(router);
-app.use(ElementPlus);
-app.mount("#app");
+import App from './App.vue'
+import router from './router'
+import './style.scss'
+
+import 'cesium/Build/Cesium/Widgets/widgets.css'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+
+const app = createApp(App)
+
+app.use(router)
+app.use(ElementPlus)
+app.mount('#app')

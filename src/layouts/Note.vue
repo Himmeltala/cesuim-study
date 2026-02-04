@@ -2,67 +2,68 @@
  * @Author: Himmeltala zhengrenfu@outlook.com
  * @Date: 2026-02-04 22:41:21
  * @LastEditors: Himmeltala zhengrenfu@outlook.com
- * @LastEditTime: 2026-02-04 23:09:46
+ * @LastEditTime: 2026-02-04 23:28:18
  * @Description: 学习笔记
 -->
 <script setup lang="js">
 import {
+  computed,
   defineAsyncComponent,
   defineProps,
-  watch,
   shallowRef,
-  computed,
-} from "vue";
-import { useRoute } from "vue-router";
-import { Notebook, ArrowRight } from "@element-plus/icons-vue";
+  watch,
+} from 'vue'
+import { useRoute } from 'vue-router'
 
-const route = useRoute();
+import { ArrowRight, Notebook } from '@element-plus/icons-vue'
+
+const route = useRoute()
 
 const props = defineProps({
   collapse: {
     type: Boolean,
     default: true,
   },
-});
-const emit = defineEmits(["update:collapse"]);
+})
+const emit = defineEmits(['update:collapse'])
 
 const collapseModel = computed({
   get: () => props.collapse,
-  set: (val) => {
-    emit("update:collapse", val);
+  set: val => {
+    emit('update:collapse', val)
   },
-});
+})
 
-const currentMdComponent = shallowRef(null);
+const currentMdComponent = shallowRef(null)
 
-const loadMarkdown = async (mdPath) => {
+const loadMarkdown = async mdPath => {
   if (!mdPath) {
-    currentMdComponent.value = null;
-    return;
+    currentMdComponent.value = null
+    return
   }
 
   try {
     currentMdComponent.value = defineAsyncComponent({
       loader: mdPath,
-    });
+    })
   } catch (error) {
-    currentMdComponent.value = null;
+    currentMdComponent.value = null
   }
-};
+}
 
 const changeNoteCollapse = () => {
-  collapseModel.value = !collapseModel.value;
-};
+  collapseModel.value = !collapseModel.value
+}
 
 watch(
   () => route.path,
-  async (nv) => {
-    if (nv !== "/") {
-      await loadMarkdown(route.meta.mdPath);
+  async nv => {
+    if (nv !== '/') {
+      await loadMarkdown(route.meta.mdPath)
     }
   },
   { immediate: true },
-);
+)
 </script>
 
 <template>
@@ -73,7 +74,7 @@ watch(
   >
     <div class="note-header">
       <span class="note-title">
-        <el-icon><Notebook /></el-icon>
+        <el-icon class="mr-2"><Notebook /></el-icon>
         学习笔记
       </span>
       <el-button type="primary" link size="small" @click="changeNoteCollapse">

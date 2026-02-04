@@ -29,5 +29,5 @@ defineProps({
     required: true,
     default: () => [],
   },
-});
+})
 </script>

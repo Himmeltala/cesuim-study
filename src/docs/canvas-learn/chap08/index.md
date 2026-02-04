@@ -31,23 +31,23 @@ const applyGray = () => {
     0,
     canvasRef.value.width,
     canvasRef.value.height,
-  );
-  const data = imageData.data; // 像素数组
+  )
+  const data = imageData.data // 像素数组
 
   // 2. 遍历每个像素，改颜色
   for (let i = 0; i < data.length; i += 4) {
-    const r = data[i]; // 红
-    const g = data[i + 1]; // 绿
-    const b = data[i + 2]; // 蓝
+    const r = data[i] // 红
+    const g = data[i + 1] // 绿
+    const b = data[i + 2] // 蓝
     // 计算灰度平均值
-    const gray = (r + g + b) / 3;
+    const gray = (r + g + b) / 3
     // 把 RGB 都设为灰度值
-    data[i] = data[i + 1] = data[i + 2] = gray;
+    data[i] = data[i + 1] = data[i + 2] = gray
   }
 
   // 3. 把改好的像素放回画布
-  ctx.putImageData(imageData, 0, 0);
-};
+  ctx.putImageData(imageData, 0, 0)
+}
 ```
 
 ![alt text](./image.png)
@@ -64,18 +64,18 @@ const applyInvert = () => {
     0,
     canvasRef.value.width,
     canvasRef.value.height,
-  );
-  const data = imageData.data;
+  )
+  const data = imageData.data
 
   for (let i = 0; i < data.length; i += 4) {
-    data[i] = 255 - data[i]; // 红反色
-    data[i + 1] = 255 - data[i + 1]; // 绿反色
-    data[i + 2] = 255 - data[i + 2]; // 蓝反色
+    data[i] = 255 - data[i] // 红反色
+    data[i + 1] = 255 - data[i + 1] // 绿反色
+    data[i + 2] = 255 - data[i + 2] // 蓝反色
     // 透明度不变
   }
 
-  ctx.putImageData(imageData, 0, 0);
-};
+  ctx.putImageData(imageData, 0, 0)
+}
 ```
 
 ![alt text](./image-1.png)
@@ -92,39 +92,39 @@ const applyBlur = () => {
     0,
     canvasRef.value.width,
     canvasRef.value.height,
-  );
-  const data = imageData.data;
-  const width = canvasRef.value.width;
-  const height = canvasRef.value.height;
+  )
+  const data = imageData.data
+  const width = canvasRef.value.width
+  const height = canvasRef.value.height
 
   // 复制一份原始数据（避免修改时覆盖原值）
-  const tempData = new Uint8ClampedArray(data);
+  const tempData = new Uint8ClampedArray(data)
 
   // 遍历像素（跳过边缘，防止越界）
   for (let y = 1; y < height - 1; y++) {
     for (let x = 1; x < width - 1; x++) {
-      const idx = (y * width + x) * 4;
+      const idx = (y * width + x) * 4
       // 取当前像素和上下左右 8 个邻域像素的 RGB 总和
       let r = 0,
         g = 0,
-        b = 0;
+        b = 0
       for (let dy = -1; dy <= 1; dy++) {
         for (let dx = -1; dx <= 1; dx++) {
-          const tempIdx = ((y + dy) * width + (x + dx)) * 4;
-          r += tempData[tempIdx];
-          g += tempData[tempIdx + 1];
-          b += tempData[tempIdx + 2];
+          const tempIdx = ((y + dy) * width + (x + dx)) * 4
+          r += tempData[tempIdx]
+          g += tempData[tempIdx + 1]
+          b += tempData[tempIdx + 2]
         }
       }
       // 取平均值（9 个像素）
-      data[idx] = r / 9;
-      data[idx + 1] = g / 9;
-      data[idx + 2] = b / 9;
+      data[idx] = r / 9
+      data[idx + 1] = g / 9
+      data[idx + 2] = b / 9
     }
   }
 
-  ctx.putImageData(imageData, 0, 0);
-};
+  ctx.putImageData(imageData, 0, 0)
+}
 ```
 
 # 颜色替换
@@ -139,23 +139,23 @@ const applyReplaceColor = () => {
     0,
     canvasRef.value.width,
     canvasRef.value.height,
-  );
-  const data = imageData.data;
+  )
+  const data = imageData.data
 
   for (let i = 0; i < data.length; i += 4) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
+    const r = data[i]
+    const g = data[i + 1]
+    const b = data[i + 2]
     // 判断：红色（R 高，G、B 低）
     if (r > 150 && g < 100 && b < 100) {
-      data[i] = 0; // 红设为 0
-      data[i + 1] = 0; // 绿设为 0
-      data[i + 2] = 255; // 蓝设为 255（变成纯蓝色）
+      data[i] = 0 // 红设为 0
+      data[i + 1] = 0 // 绿设为 0
+      data[i + 2] = 255 // 蓝设为 255（变成纯蓝色）
     }
   }
 
-  ctx.putImageData(imageData, 0, 0);
-};
+  ctx.putImageData(imageData, 0, 0)
+}
 ```
 
 ![alt text](./image-2.png)

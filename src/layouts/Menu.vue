@@ -20,18 +20,19 @@
 </template>
 
 <script setup lang="js">
-import { computed } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import MenuTree from "./MenuTree.vue";
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const route = useRoute();
-const router = useRouter();
+import MenuTree from './MenuTree.vue'
 
-const activeMenu = computed(() => route.path);
+const route = useRoute()
+const router = useRouter()
+
+const activeMenu = computed(() => route.path)
 
 const menus = computed(() => {
-  return router.options.routes.filter((r) => r.path && r.meta);
-});
+  return router.options.routes.filter(r => r.path && r.meta)
+})
 </script>
 
 <style scoped lang="scss">

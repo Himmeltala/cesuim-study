@@ -5,15 +5,15 @@
 ```js
 // 平移画布原点
 const drawTranslate = () => {
-  clearCanvas();
-  ctx.save(); // 保存初始状态
+  clearCanvas()
+  ctx.save() // 保存初始状态
   // 把原点从(0,0)平移到(200,200)
-  ctx.translate(200, 200);
+  ctx.translate(200, 200)
   // 画一个矩形，坐标(0,0)实际在画布(200,200)位置
-  ctx.fillStyle = "#409eff";
-  ctx.fillRect(0, 0, 100, 100);
-  ctx.restore(); // 恢复状态，不影响后续绘制
-};
+  ctx.fillStyle = '#409eff'
+  ctx.fillRect(0, 0, 100, 100)
+  ctx.restore() // 恢复状态，不影响后续绘制
+}
 ```
 
 ![alt text](./image.png)
@@ -75,14 +75,14 @@ const drawRotateCenter = () => {
 ```js
 // 缩放画布
 const drawScale = () => {
-  clearCanvas();
-  ctx.save();
+  clearCanvas()
+  ctx.save()
   // x轴放大2倍，y轴放大1.5倍
-  ctx.scale(2, 1.5);
-  ctx.fillStyle = "#f56c6c";
-  ctx.fillRect(50, 50, 50, 50);
-  ctx.restore();
-};
+  ctx.scale(2, 1.5)
+  ctx.fillStyle = '#f56c6c'
+  ctx.fillRect(50, 50, 50, 50)
+  ctx.restore()
+}
 ```
 
 ![alt text](./image-3.png)
@@ -94,15 +94,15 @@ const drawScale = () => {
 ```js
 // 水平翻转画布
 const drawScaleFlip = () => {
-  clearCanvas();
-  ctx.save();
+  clearCanvas()
+  ctx.save()
   // 水平翻转（x轴缩放-1），需要先平移，否则翻转后会超出画布
-  ctx.translate(canvasRef.value.width, 0);
-  ctx.scale(-1, 1);
-  ctx.fillStyle = "#9c6cef";
-  ctx.fillRect(50, 50, 100, 100);
-  ctx.restore();
-};
+  ctx.translate(canvasRef.value.width, 0)
+  ctx.scale(-1, 1)
+  ctx.fillStyle = '#9c6cef'
+  ctx.fillRect(50, 50, 100, 100)
+  ctx.restore()
+}
 ```
 
 ![alt text](./image-4.png)
@@ -125,14 +125,14 @@ f：y 轴平移
 ```js
 // 矩阵变换（平移+缩放+倾斜）
 const drawTransform = () => {
-  clearCanvas();
-  ctx.save();
+  clearCanvas()
+  ctx.save()
   // 直接设置矩阵：x缩放1.2，y缩放1.2，x平移200，y平移100，加一点倾斜
-  ctx.setTransform(1.2, 0.1, 0.1, 1.2, 200, 100);
-  ctx.fillStyle = "#42b983";
-  ctx.fillRect(0, 0, 80, 80);
-  ctx.restore();
-};
+  ctx.setTransform(1.2, 0.1, 0.1, 1.2, 200, 100)
+  ctx.fillStyle = '#42b983'
+  ctx.fillRect(0, 0, 80, 80)
+  ctx.restore()
+}
 ```
 
 ![alt text](./image-5.png)

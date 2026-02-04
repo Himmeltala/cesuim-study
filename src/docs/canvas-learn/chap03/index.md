@@ -12,8 +12,8 @@ strokeText(text, x, y [, maxWidth])
 
 ```js
 function draw(ctx) {
-  ctx.font = "48px serif";
-  ctx.fillText("你好世界", 10, 50);
+  ctx.font = '48px serif'
+  ctx.fillText('你好世界', 10, 50)
 }
 ```
 
@@ -21,8 +21,8 @@ function draw(ctx) {
 
 ```js
 function draw(ctx) {
-  ctx.font = "48px serif";
-  ctx.strokeText("你好世界", 10, 50);
+  ctx.font = '48px serif'
+  ctx.strokeText('你好世界', 10, 50)
 }
 ```
 
@@ -32,18 +32,18 @@ function draw(ctx) {
 
 ```js
 function draw(ctx) {
-  ctx.font = "48px serif";
+  ctx.font = '48px serif'
 
-  ctx.textBaseline = "hanging";
-  ctx.strokeText("hanging", 10, 50);
+  ctx.textBaseline = 'hanging'
+  ctx.strokeText('hanging', 10, 50)
 
-  ctx.textBaseline = "middle";
-  ctx.strokeText("middle", 250, 50);
+  ctx.textBaseline = 'middle'
+  ctx.strokeText('middle', 250, 50)
 
-  ctx.beginPath();
-  ctx.moveTo(10, 50);
-  ctx.lineTo(300, 50);
-  ctx.stroke();
+  ctx.beginPath()
+  ctx.moveTo(10, 50)
+  ctx.lineTo(300, 50)
+  ctx.stroke()
 }
 ```
 
@@ -53,7 +53,7 @@ measureText()
 返回一个包含以当前文本样式绘制指定文本时，其所具有的宽度（以像素为单位）的 TextMetrics 对象。
 
 ```js
-const ctx = document.getElementById("canvas").getContext("2d");
-const text = ctx.measureText("foo"); // TextMetrics 对象
-text.width;
+const ctx = document.getElementById('canvas').getContext('2d')
+const text = ctx.measureText('foo') // TextMetrics 对象
+text.width
 ```

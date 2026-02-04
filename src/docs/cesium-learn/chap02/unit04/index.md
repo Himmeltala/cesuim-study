@@ -8,23 +8,23 @@
 - 创建 Cesium 标准的属性变更事件，用于监听参数修改
 
 ```javascript
-import * as Cesium from "cesium";
+import * as Cesium from 'cesium'
 
 class 自定义材质类名MaterialProperty {
   constructor(options) {
     // 创建属性变更事件，Cesium材质体系的标准要求
-    this._definitionChanged = new Cesium.Event();
+    this._definitionChanged = new Cesium.Event()
 
     // 声明所有需要配置的私有变量，前缀统一加_，规范区分
-    this._属性1 = undefined;
-    this._属性2 = undefined;
-    this._属性3 = undefined;
+    this._属性1 = undefined
+    this._属性2 = undefined
+    this._属性3 = undefined
     // ... 按需添加N个属性
 
     // 初始化传入的配置参数，赋值给私有变量
-    this.属性1 = options.属性1;
-    this.属性2 = options.属性2;
-    this.属性3 = options.属性3;
+    this.属性1 = options.属性1
+    this.属性2 = options.属性2
+    this.属性3 = options.属性3
   }
 }
 ```
@@ -34,15 +34,15 @@ class 自定义材质类名MaterialProperty {
 ```javascript
 class LineFlowMaterialProperty {
   constructor(options) {
-    this._definitionChanged = new Cesium.Event();
-    this._color = undefined; // 流动线颜色
-    this._speed = undefined; // 流动速度
-    this._percent = undefined; // 流动段占比
-    this._gradient = undefined; // 渐变透明度
-    this.color = options.color;
-    this.speed = options.speed;
-    this.percent = options.percent;
-    this.gradient = options.gradient;
+    this._definitionChanged = new Cesium.Event()
+    this._color = undefined // 流动线颜色
+    this._speed = undefined // 流动速度
+    this._percent = undefined // 流动段占比
+    this._gradient = undefined // 渐变透明度
+    this.color = options.color
+    this.speed = options.speed
+    this.percent = options.percent
+    this.gradient = options.gradient
   }
 }
 ```
@@ -137,11 +137,11 @@ equals(other) {
 ```javascript
 // 写在类的外部，类定义完成后
 Object.defineProperties(自定义材质类名MaterialProperty.prototype, {
-  属性名1: Cesium.createPropertyDescriptor("属性名1"),
-  属性名2: Cesium.createPropertyDescriptor("属性名2"),
-  属性名3: Cesium.createPropertyDescriptor("属性名3"),
+  属性名1: Cesium.createPropertyDescriptor('属性名1'),
+  属性名2: Cesium.createPropertyDescriptor('属性名2'),
+  属性名3: Cesium.createPropertyDescriptor('属性名3'),
   // 所有需要响应式的属性都要在这里绑定
-});
+})
 ```
 
 ### 5.编写着色器源码
@@ -172,7 +172,7 @@ const 着色器常量名 = `
       // 返回材质对象
       return material;
     }
-`;
+`
 ```
 
 ### 6.将材质注册到Cesium材质缓存
@@ -180,9 +180,9 @@ const 着色器常量名 = `
 Cesium 内部维护了一个材质缓存池 `Cesium.Material._materialCache`，所有自定义材质必须**注册到缓存池**后才能被 Cesium 识别和使用，这是最后一步核心操作，**固定流程，无任何变体**，可直接复用模板。
 
 ```javascript
-Cesium.Material._materialCache.addMaterial("步骤二的材质类型字符串", {
+Cesium.Material._materialCache.addMaterial('步骤二的材质类型字符串', {
   fabric: {
-    type: "步骤二的材质类型字符串", // 必须和getType返回的字符串一致
+    type: '步骤二的材质类型字符串', // 必须和getType返回的字符串一致
     uniforms: {
       // 材质的默认参数，与uniform变量一一对应，和JS中的默认值保持一致
       参数名1: 默认值,
@@ -192,9 +192,9 @@ Cesium.Material._materialCache.addMaterial("步骤二的材质类型字符串", 
   },
   // 固定：声明材质是否为半透明材质，动态材质/带透明度的材质一律返回true
   translucent: function (material) {
-    return true;
+    return true
   },
-});
+})
 ```
 
 ### 7.业务中导入并使用
@@ -202,8 +202,9 @@ Cesium.Material._materialCache.addMaterial("步骤二的材质类型字符串", 
 所有自定义材质的使用方式完全一致，在Entity的polyline/rectangle/ellipse等图形的`material`属性中，**new 导入的材质类 + 传入配置参数**即可，示例基于你的流动线材质：
 
 ```javascript
-import * as Cesium from "cesium";
-import LineFlowMaterialProperty from "./你的文件路径/lineFlowMaterialProperty.js";
+import * as Cesium from 'cesium'
+
+import LineFlowMaterialProperty from './你的文件路径/lineFlowMaterialProperty.js'
 
 // 示例：创建流动线
 viewer.entities.add({
@@ -219,5 +220,5 @@ viewer.entities.add({
     }),
     clampToGround: true,
   },
-});
+})
 ```

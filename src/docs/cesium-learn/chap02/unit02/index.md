@@ -23,7 +23,7 @@ const entity = viewer.entities.add({
     pixelSize: 10,
     color: Cesium.Color.RED,
   },
-});
+})
 ```
 
 ### 完整属性
@@ -42,7 +42,7 @@ const entity = viewer.entities.add({
     scaleByDistance: new Cesium.NearFarScalar(1.5e2, 2.0, 1.5e7, 0.5), // 距离缩放
     translucencyByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 1.5e7, 0.5), // 距离透明度
   },
-});
+})
 ```
 
 ## 点属性详解
@@ -62,32 +62,32 @@ const entity = viewer.entities.add({
 
 ```javascript
 // 内置颜色
-Cesium.Color.RED;
-Cesium.Color.GREEN;
-Cesium.Color.BLUE;
-Cesium.Color.WHITE;
-Cesium.Color.BLACK;
-Cesium.Color.YELLOW;
-Cesium.Color.ORANGE;
-Cesium.Color.PURPLE;
+Cesium.Color.RED
+Cesium.Color.GREEN
+Cesium.Color.BLUE
+Cesium.Color.WHITE
+Cesium.Color.BLACK
+Cesium.Color.YELLOW
+Cesium.Color.ORANGE
+Cesium.Color.PURPLE
 
 // 自定义颜色
-Cesium.Color.fromCssColorString("#ff0000");
-Cesium.Color.fromBytes(255, 0, 0);
-Cesium.Color.fromCssColorString("rgba(255, 0, 0, 0.5)");
+Cesium.Color.fromCssColorString('#ff0000')
+Cesium.Color.fromBytes(255, 0, 0)
+Cesium.Color.fromCssColorString('rgba(255, 0, 0, 0.5)')
 ```
 
 ## 高度参考
 
 ```javascript
 // 绝对高度
-Cesium.HeightReference.NONE;
+Cesium.HeightReference.NONE
 
 // 贴地（地形高度）
-Cesium.HeightReference.CLAMP_TO_GROUND;
+Cesium.HeightReference.CLAMP_TO_GROUND
 
 // 相对地形的高度
-Cesium.HeightReference.RELATIVE_TO_GROUND;
+Cesium.HeightReference.RELATIVE_TO_GROUND
 ```
 
 ## 距离效果
@@ -99,7 +99,7 @@ entity.point.scaleByDistance = new Cesium.NearFarScalar(
   2.0, // 近处：1000米内放大2倍
   1.0e6,
   0.5, // 远处：1000公里外缩小到0.5倍
-);
+)
 
 // 透明度效果：远处渐隐
 entity.point.translucencyByDistance = new Cesium.NearFarScalar(
@@ -107,31 +107,31 @@ entity.point.translucencyByDistance = new Cesium.NearFarScalar(
   1.0, // 近处：不透明
   1.0e6,
   0.2, // 远处：20%透明度
-);
+)
 ```
 
 ## 批量添加点
 
 ```javascript
 const locations = [
-  { name: "北京", lon: 116.4, lat: 39.9 },
-  { name: "上海", lon: 121.5, lat: 31.2 },
-  { name: "广州", lon: 113.3, lat: 23.1 },
-  { name: "深圳", lon: 114.1, lat: 22.5 },
-];
+  { name: '北京', lon: 116.4, lat: 39.9 },
+  { name: '上海', lon: 121.5, lat: 31.2 },
+  { name: '广州', lon: 113.3, lat: 23.1 },
+  { name: '深圳', lon: 114.1, lat: 22.5 },
+]
 
-locations.forEach((loc) => {
+locations.forEach(loc => {
   viewer.entities.add({
     position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0),
     point: {
       pixelSize: 15,
-      color: Cesium.Color.fromCssColorString("#409EFF"),
+      color: Cesium.Color.fromCssColorString('#409EFF'),
       outlineColor: Cesium.Color.WHITE,
       outlineWidth: 2,
     },
     label: {
       text: loc.name,
-      font: "14px sans-serif",
+      font: '14px sans-serif',
       fillColor: Cesium.Color.BLACK,
       outlineColor: Cesium.Color.WHITE,
       outlineWidth: 2,
@@ -139,47 +139,47 @@ locations.forEach((loc) => {
       verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       pixelOffset: new Cesium.Cartesian2(0, -10),
     },
-  });
-});
+  })
+})
 ```
 
 ## 交互操作
 
 ```javascript
 // 监听点击事件
-const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
 
 handler.setInputAction(function (movement) {
-  const picked = viewer.scene.pick(movement.position);
+  const picked = viewer.scene.pick(movement.position)
 
   if (Cesium.defined(picked) && picked.id) {
-    const entity = picked.id;
-    console.log("点击的实体:", entity);
+    const entity = picked.id
+    console.log('点击的实体:', entity)
 
     // 高亮显示
-    viewer.selectedEntity = entity;
+    viewer.selectedEntity = entity
   }
-}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 ```
 
 ## 实体管理
 
 ```javascript
 // 获取所有实体
-const entities = viewer.entities.values;
+const entities = viewer.entities.values
 
 // 移除指定实体
-viewer.entities.remove(entity);
+viewer.entities.remove(entity)
 
 // 移除所有实体
-viewer.entities.removeAll();
+viewer.entities.removeAll()
 
 // 查找实体
-const entity = viewer.entities.getById("entity-id");
+const entity = viewer.entities.getById('entity-id')
 
 // 遍历实体
 for (let i = 0; i < viewer.entities.length; i++) {
-  const entity = viewer.entities.get(i);
-  console.log(entity);
+  const entity = viewer.entities.get(i)
+  console.log(entity)
 }
 ```

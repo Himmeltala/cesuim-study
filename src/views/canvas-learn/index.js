@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: "Canvas 篇",
+    title: 'Canvas 篇',
   },
-  layout: () => import("@/layouts/DefaultLayout.vue"),
-};
+  layout: () => import('@/layouts/DefaultLayout.vue'),
+}

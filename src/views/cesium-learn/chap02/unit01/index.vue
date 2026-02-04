@@ -94,24 +94,25 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from "vue";
-import * as Cesium from "cesium";
-import { Plus, Delete } from "@element-plus/icons-vue";
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-const cesiumContainer = ref(null);
-let viewer = null;
+import { Delete, Plus } from '@element-plus/icons-vue'
+import * as Cesium from 'cesium'
+
+const cesiumContainer = ref(null)
+let viewer = null
 
 // 线配置
 const polylineConfig = reactive({
   width: 5,
   clampToGround: true,
-});
+})
 
 // 预设路线
 const presetRoutes = [
   {
-    name: "京沪线",
-    color: "#FF6B6B",
+    name: '京沪线',
+    color: '#FF6B6B',
     coordinates: [
       [116.4, 39.9],
       [117.2, 39.1],
@@ -120,8 +121,8 @@ const presetRoutes = [
     ],
   },
   {
-    name: "京广线",
-    color: "#4ECDC4",
+    name: '京广线',
+    color: '#4ECDC4',
     coordinates: [
       [116.4, 39.9],
       [114.3, 38.0],
@@ -142,8 +143,8 @@ const presetRoutes = [
     ],
   },
   {
-    name: "长江沿线",
-    color: "#45B7D1",
+    name: '长江沿线',
+    color: '#45B7D1',
     coordinates: [
       [106.6, 29.6], // 重庆
       [104.1, 30.6], // 成都（模拟起点）
@@ -156,12 +157,12 @@ const presetRoutes = [
       [121.5, 31.2], // 上海
     ],
   },
-];
+]
 
 // 飞向路线
-const flyToRoute = (route) => {
-  const positions = route.coordinates.flatMap((coord) => coord);
-  const cartesianPositions = Cesium.Cartesian3.fromDegreesArray(positions);
+const flyToRoute = route => {
+  const positions = route.coordinates.flatMap(coord => coord)
+  const cartesianPositions = Cesium.Cartesian3.fromDegreesArray(positions)
 
   viewer.camera.flyTo({
     destination: Cesium.Cartesian3.fromDegrees(
@@ -170,25 +171,25 @@ const flyToRoute = (route) => {
       3000000,
     ),
     duration: 2,
-  });
-};
+  })
+}
 
 // 添加随机路线
 const addRandomRoute = () => {
-  const startLon = 100 + Math.random() * 20;
-  const startLat = 25 + Math.random() * 15;
-  const points = [];
+  const startLon = 100 + Math.random() * 20
+  const startLat = 25 + Math.random() * 15
+  const points = []
 
   // 生成随机路径点
   for (let i = 0; i < 5; i++) {
     points.push([
       startLon + (Math.random() - 0.5) * 10,
       startLat + (Math.random() - 0.5) * 8,
-    ]);
+    ])
   }
 
-  const positions = points.flatMap((coord) => coord);
-  const colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"];
+  const positions = points.flatMap(coord => coord)
+  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
 
   viewer.entities.add({
     polyline: {
@@ -199,33 +200,33 @@ const addRandomRoute = () => {
       ),
       clampToGround: polylineConfig.clampToGround,
     },
-  });
+  })
 
-  console.log("添加路线:", points);
-};
+  console.log('添加路线:', points)
+}
 
 // 更新所有线
 const updatePolylines = () => {
-  viewer.entities.values.forEach((entity) => {
+  viewer.entities.values.forEach(entity => {
     if (entity.polyline) {
-      entity.polyline.width = polylineConfig.width;
-      entity.polyline.clampToGround = polylineConfig.clampToGround;
+      entity.polyline.width = polylineConfig.width
+      entity.polyline.clampToGround = polylineConfig.clampToGround
     }
-  });
-};
+  })
+}
 
 // 清除所有
 const clearAll = () => {
-  viewer.entities.removeAll();
+  viewer.entities.removeAll()
 
   // 重新添加预设路线
-  addPresetRoutes();
-};
+  addPresetRoutes()
+}
 
 // 添加预设路线
 const addPresetRoutes = () => {
-  presetRoutes.forEach((route) => {
-    const positions = route.coordinates.flatMap((coord) => coord);
+  presetRoutes.forEach(route => {
+    const positions = route.coordinates.flatMap(coord => coord)
 
     viewer.entities.add({
       name: route.name,
@@ -235,9 +236,9 @@ const addPresetRoutes = () => {
         material: Cesium.Color.fromCssColorString(route.color),
         clampToGround: polylineConfig.clampToGround,
       },
-    });
-  });
-};
+    })
+  })
+}
 
 onMounted(() => {
   viewer = new Cesium.Viewer(cesiumContainer.value, {
@@ -247,23 +248,23 @@ onMounted(() => {
     selectionIndicator: false,
     baseLayerPicker: false,
     fullscreenButton: false,
-  });
+  })
 
   // 飞向中国
   viewer.camera.flyTo({
     destination: Cesium.Cartesian3.fromDegrees(105, 35, 4000000),
-  });
+  })
 
   // 添加预设路线
-  addPresetRoutes();
-});
+  addPresetRoutes()
+})
 
 onUnmounted(() => {
   if (viewer) {
-    viewer.destroy();
-    viewer = null;
+    viewer.destroy()
+    viewer = null
   }
-});
+})
 </script>
 
 <style scoped>

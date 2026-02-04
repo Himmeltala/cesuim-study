@@ -1,20 +1,20 @@
 <script setup lang="js">
-import { nextTick, onMounted } from "vue";
+import { nextTick, onMounted } from 'vue'
 
 onMounted(() => {
   nextTick(() => {
-    const canvas = document.getElementById("tutorial");
-    const ctx = canvas.getContext("2d");
-    draw(ctx);
-  });
-});
+    const canvas = document.getElementById('tutorial')
+    const ctx = canvas.getContext('2d')
+    draw(ctx)
+  })
+})
 
 function draw(ctx) {
-  ctx.fillStyle = "rgb(200,0,0)";
-  ctx.fillRect(10, 10, 55, 50);
+  ctx.fillStyle = 'rgb(200,0,0)'
+  ctx.fillRect(10, 10, 55, 50)
 
-  ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-  ctx.fillRect(30, 30, 55, 50);
+  ctx.fillStyle = 'rgba(0, 0, 200, 0.5)'
+  ctx.fillRect(30, 30, 55, 50)
 }
 </script>
 

@@ -3,19 +3,19 @@
 让图形在画布上左右 / 上下移动，核心是更新 x/y 坐标，碰到边界就反弹。
 
 ```js
-let x = 0;
-let speed = 3; // 移动速度
+let x = 0
+let speed = 3 // 移动速度
 
 const drawMoveAnimation = () => {
-  clearCanvas();
-  x += speed;
+  clearCanvas()
+  x += speed
   if (x < 0 || x > canvasRef.value.width - 100) {
-    speed = -speed;
+    speed = -speed
   }
-  ctx.fillStyle = "#409eff";
-  ctx.fillRect(x, 200, 100, 100);
-  animationId = requestAnimationFrame(drawMoveAnimation);
-};
+  ctx.fillStyle = '#409eff'
+  ctx.fillRect(x, 200, 100, 100)
+  animationId = requestAnimationFrame(drawMoveAnimation)
+}
 ```
 
 # 旋转动画
@@ -24,25 +24,25 @@ const drawMoveAnimation = () => {
 
 ```js
 // 旋转动画变量
-let angle = 0;
+let angle = 0
 
 const drawRotateAnimation = () => {
-  clearCanvas();
+  clearCanvas()
   // 更新角度
-  angle += 0.02;
+  angle += 0.02
 
-  ctx.save();
-  ctx.translate(400, 250);
-  ctx.rotate(angle);
-  ctx.translate(-400, -250);
+  ctx.save()
+  ctx.translate(400, 250)
+  ctx.rotate(angle)
+  ctx.translate(-400, -250)
 
   // 绘制正方形
-  ctx.fillStyle = "#67c23a";
-  ctx.fillRect(350, 200, 100, 100);
-  ctx.restore();
+  ctx.fillStyle = '#67c23a'
+  ctx.fillRect(350, 200, 100, 100)
+  ctx.restore()
 
-  animationId = requestAnimationFrame(drawRotateAnimation);
-};
+  animationId = requestAnimationFrame(drawRotateAnimation)
+}
 ```
 
 # 缩放动画
@@ -128,8 +128,8 @@ animationId = requestAnimationFrame(drawMultiAnimation);
 // 停止所有动画
 const stopAnimation = () => {
   if (animationId) {
-    cancelAnimationFrame(animationId);
-    animationId = null;
+    cancelAnimationFrame(animationId)
+    animationId = null
   }
-};
+}
 ```

@@ -6,46 +6,46 @@
  * @Description: 面包屑
 -->
 <script setup lang="js">
-import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const activeMenu = computed(() => route.path);
+const activeMenu = computed(() => route.path)
 
 const menus = computed(() => {
-  return router.options.routes.filter((r) => r.path && r.meta);
-});
+  return router.options.routes.filter(r => r.path && r.meta)
+})
 
 const breadcrumbItems = computed(() => {
-  const items = [];
-  const pathSegments = activeMenu.value.split("/").filter(Boolean);
+  const items = []
+  const pathSegments = activeMenu.value.split('/').filter(Boolean)
 
   const findRoute = (routes, index) => {
     if (index >= pathSegments.length) {
-      return true;
+      return true
     }
 
     for (const route of routes) {
-      if ([route.path].some((i) => i.includes(pathSegments[index]))) {
+      if ([route.path].some(i => i.includes(pathSegments[index]))) {
         items.push({
           meta: route.meta,
-        });
+        })
 
         if (route.children) {
-          return findRoute(route.children, index + 1);
+          return findRoute(route.children, index + 1)
         }
-        return true;
+        return true
       }
     }
-    return false;
-  };
+    return false
+  }
 
-  findRoute(menus.value, 0);
+  findRoute(menus.value, 0)
 
-  return items;
-});
+  return items
+})
 </script>
 
 <template>

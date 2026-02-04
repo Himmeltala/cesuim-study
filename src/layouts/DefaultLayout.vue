@@ -28,7 +28,7 @@
               <DocumentChecked v-if="!isNoteCollapse" />
               <Document v-else />
             </el-icon>
-            {{ isNoteCollapse ? "显示笔记" : "收起笔记" }}
+            {{ isNoteCollapse ? '显示笔记' : '收起笔记' }}
           </el-button>
           <el-icon @click="handleDarkModeChange">
             <Moon v-if="!isDarkMode" />
@@ -51,25 +51,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
+
 import {
+  Document,
+  DocumentChecked,
+  MapLocation,
   Moon,
   Sunny,
-  Document,
-  MapLocation,
-  DocumentChecked,
-} from "@element-plus/icons-vue";
-import Menu from "./Menu.vue";
-import Breadcrumb from "./Breadcrumb.vue";
-import Note from "./Note.vue";
+} from '@element-plus/icons-vue'
 
-const isDarkMode = ref(true);
-const isNavCollapse = ref(false);
-const isNoteCollapse = ref(false);
+import Breadcrumb from './Breadcrumb.vue'
+import Menu from './Menu.vue'
+import Note from './Note.vue'
+
+const isDarkMode = ref(true)
+const isNavCollapse = ref(false)
+const isNoteCollapse = ref(false)
 
 function handleDarkModeChange() {
-  isDarkMode.value = !isDarkMode.value;
-  document.documentElement.classList.toggle("dark", isDarkMode.value);
+  isDarkMode.value = !isDarkMode.value
+  document.documentElement.classList.toggle('dark', isDarkMode.value)
 }
 </script>
 

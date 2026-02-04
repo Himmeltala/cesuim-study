@@ -5,18 +5,18 @@
 通过 getContext() 获取 canvas 的上下文。
 
 ```js
-let canvas = document.getElementById("tutorial");
-let ctx = canvas.getContext("2d");
+let canvas = document.getElementById('tutorial')
+let ctx = canvas.getContext('2d')
 ```
 
 绘制两个正方形
 
 ```js
-ctx.fillStyle = "rgb(200,0,0)";
-ctx.fillRect(10, 10, 55, 50);
+ctx.fillStyle = 'rgb(200,0,0)'
+ctx.fillRect(10, 10, 55, 50)
 
-ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-ctx.fillRect(30, 30, 55, 50);
+ctx.fillStyle = 'rgba(0, 0, 200, 0.5)'
+ctx.fillRect(30, 30, 55, 50)
 ```
 
 # 绘制函数

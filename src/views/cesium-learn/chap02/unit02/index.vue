@@ -71,26 +71,27 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from "vue";
-import * as Cesium from "cesium";
-import { Plus, Delete } from "@element-plus/icons-vue";
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-const cesiumContainer = ref(null);
-let viewer = null;
-const selectedPoint = ref(null);
+import { Delete, Plus } from '@element-plus/icons-vue'
+import * as Cesium from 'cesium'
+
+const cesiumContainer = ref(null)
+let viewer = null
+const selectedPoint = ref(null)
 
 // 点配置
 const pointConfig = reactive({
   pixelSize: 15,
   outlineWidth: 2,
-  color: "#409EFF",
-});
+  color: '#409EFF',
+})
 
 // 添加随机点
 const addRandomPoint = () => {
-  const lon = 70 + Math.random() * 60; // 70-130
-  const lat = 15 + Math.random() * 40; // 15-55
-  const height = Math.random() * 5000; // 0-5000
+  const lon = 70 + Math.random() * 60 // 70-130
+  const lat = 15 + Math.random() * 40 // 15-55
+  const height = Math.random() * 5000 // 0-5000
 
   viewer.entities.add({
     id: `point-${Date.now()}`,
@@ -102,14 +103,14 @@ const addRandomPoint = () => {
       outlineWidth: pointConfig.outlineWidth,
       heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
     },
-  });
+  })
 
   // 添加标签
   viewer.entities.add({
     position: Cesium.Cartesian3.fromDegrees(lon, lat, height + 1000),
     label: {
       text: `P${viewer.entities.values.length}`,
-      font: "12px sans-serif",
+      font: '12px sans-serif',
       fillColor: Cesium.Color.WHITE,
       outlineColor: Cesium.Color.BLACK,
       outlineWidth: 2,
@@ -118,29 +119,29 @@ const addRandomPoint = () => {
       pixelOffset: new Cesium.Cartesian2(0, -10),
       distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 1e7),
     },
-  });
+  })
 
-  console.log("添加点:", { lon, lat, height });
-};
+  console.log('添加点:', { lon, lat, height })
+}
 
 // 更新所有点的样式
 const updatePoints = () => {
-  viewer.entities.values.forEach((entity) => {
+  viewer.entities.values.forEach(entity => {
     if (entity.point) {
-      entity.point.pixelSize = pointConfig.pixelSize;
-      entity.point.outlineWidth = pointConfig.outlineWidth;
-      entity.point.color = Cesium.Color.fromCssColorString(pointConfig.color);
+      entity.point.pixelSize = pointConfig.pixelSize
+      entity.point.outlineWidth = pointConfig.outlineWidth
+      entity.point.color = Cesium.Color.fromCssColorString(pointConfig.color)
     }
-  });
-};
+  })
+}
 
 // 清除所有点
 const clearAll = () => {
-  viewer.entities.removeAll();
-  selectedPoint.value = null;
-};
+  viewer.entities.removeAll()
+  selectedPoint.value = null
+}
 
-let handler = null;
+let handler = null
 
 onMounted(() => {
   viewer = new Cesium.Viewer(cesiumContainer.value, {
@@ -150,21 +151,21 @@ onMounted(() => {
     selectionIndicator: false,
     baseLayerPicker: false,
     fullscreenButton: false,
-  });
+  })
 
   // 飞向中国
   viewer.camera.flyTo({
     destination: Cesium.Cartesian3.fromDegrees(100, 35, 5000000),
-  });
+  })
 
   // 添加一些初始点
   const initialPoints = [
-    { lon: 116.4, lat: 39.9, name: "北京" },
-    { lon: 121.5, lat: 31.2, name: "上海" },
-    { lon: 113.3, lat: 23.1, name: "广州" },
-    { lon: 104.1, lat: 30.6, name: "成都" },
-    { lon: 120.2, lat: 30.3, name: "杭州" },
-  ];
+    { lon: 116.4, lat: 39.9, name: '北京' },
+    { lon: 121.5, lat: 31.2, name: '上海' },
+    { lon: 113.3, lat: 23.1, name: '广州' },
+    { lon: 104.1, lat: 30.6, name: '成都' },
+    { lon: 120.2, lat: 30.3, name: '杭州' },
+  ]
 
   initialPoints.forEach((point, index) => {
     viewer.entities.add({
@@ -176,52 +177,52 @@ onMounted(() => {
         outlineColor: Cesium.Color.WHITE,
         outlineWidth: pointConfig.outlineWidth,
       },
-    });
+    })
 
     viewer.entities.add({
       position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, 500),
       label: {
         text: point.name,
-        font: "14px sans-serif",
-        fillColor: Cesium.Color.fromCssColorString("#fff"),
+        font: '14px sans-serif',
+        fillColor: Cesium.Color.fromCssColorString('#fff'),
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 2,
         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         pixelOffset: new Cesium.Cartesian2(0, -10),
       },
-    });
-  });
+    })
+  })
 
   // 监听点击事件
-  handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
 
-  handler.setInputAction((movement) => {
-    const picked = viewer.scene.pick(movement.position);
+  handler.setInputAction(movement => {
+    const picked = viewer.scene.pick(movement.position)
 
     if (Cesium.defined(picked) && picked.id && picked.id.point) {
-      const entity = picked.id;
-      const position = entity.position.getValue(Cesium.JulianDate.now());
-      const cartesian = Cesium.Cartographic.fromCartesian(position);
+      const entity = picked.id
+      const position = entity.position.getValue(Cesium.JulianDate.now())
+      const cartesian = Cesium.Cartographic.fromCartesian(position)
 
       selectedPoint.value = {
         lon: Cesium.Math.toDegrees(cartesian.longitude),
         lat: Cesium.Math.toDegrees(cartesian.latitude),
         height: cartesian.height,
-      };
+      }
     }
-  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-});
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+})
 
 onUnmounted(() => {
   if (handler) {
-    handler.destroy();
+    handler.destroy()
   }
   if (viewer) {
-    viewer.destroy();
-    viewer = null;
+    viewer.destroy()
+    viewer = null
   }
-});
+})
 </script>
 
 <style scoped>
