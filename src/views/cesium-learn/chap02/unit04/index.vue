@@ -7,7 +7,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import * as Cesium from "cesium";
-import LineFlowMaterialProperty from "./js/lineFlowMaterialProperty.js";
+import LineFlowMaterialProperty from "../js/lineFlowMaterialProperty.js";
 
 const cesiumContainer = ref(null);
 let viewer = null;

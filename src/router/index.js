@@ -1,105 +1,143 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-const routes = [
-  {
-    path: "/",
-    component: () => import("@/views/index.vue"),
-    redirect: "/chapter01/basic/hello-cesium",
-    children: [
-      // 第一章
-      {
-        path: "chapter01/basic/hello-cesium",
-        name: "HelloCesium",
-        component: () => import("@/views/chapter01/basic/HelloCesium.vue"),
-        meta: {
-          title: "Cesium 初始化",
-          chapter: "第一章：基础入门",
-          mdPath: "chapter01/basic/hello-cesium.md",
-        },
-      },
-      {
-        path: "chapter01/basic/viewer-options",
-        name: "ViewerOptions",
-        component: () => import("@/views/chapter01/basic/ViewerOptions.vue"),
-        meta: {
-          title: "Viewer 配置",
-          chapter: "第一章：基础入门",
-          mdPath: "chapter01/basic/viewer-options.md",
-        },
-      },
-      // 第二章
-      {
-        path: "chapter02/entities/point-entity",
-        name: "PointEntity",
-        component: () => import("@/views/chapter02/entities/PointEntity.vue"),
-        meta: {
-          title: "点实体",
-          chapter: "第二章：实体与图形",
-          mdPath: "chapter02/entities/point-entity.md",
-        },
-      },
-      {
-        path: "chapter02/entities/polyline-entity",
-        name: "PolylineEntity",
-        component: () =>
-          import("@/views/chapter02/entities/PolylineEntity.vue"),
-        meta: {
-          title: "线实体",
-          chapter: "第二章：实体与图形",
-          mdPath: "chapter02/entities/polyline-entity.md",
-        },
-      },
-      {
-        path: "chapter02/entities/parabola-flow",
-        name: "ParabolaFlow",
-        component: () => import("@/views/chapter02/entities/ParabolaFlow.vue"),
-        meta: {
-          title: "抛物线",
-          chapter: "第二章：实体与图形",
-          mdPath: "chapter02/entities/parabola-flow.md",
-        },
-      },
-      {
-        path: "chapter02/entities/polygon-entity",
-        name: "PolygonEntity",
-        component: () => import("@/views/chapter02/entities/PolygnEntity.vue"),
-        meta: {
-          title: "面状要素",
-          chapter: "第二章：实体与图形",
-          mdPath: "chapter02/entities/polygon-entity.md",
-        },
-      },
-      {
-        path: "chapter02/entities/circle-spiral-entity",
-        name: "CircleSpiralEntity",
-        component: () => import("@/views/chapter02/entities/CircleSpiralEntity.vue"),
-        meta: {
-          title: "旋转螺旋",
-          chapter: "第二章：实体与图形",
-          mdPath: "chapter02/entities/circle-spiral-entity.md",
-        },
-      },
-      {
-        path: "chapter03/camera-lookat",
-        name: "CameraLookAt",
-        component: () => import("@/views/chapter03/CameraLookAt.vue"),
-        meta: {
-          title: "相机 LookAt",
-          chapter: "第三章：相机控制",
-          mdPath: "chapter03/camera-lookat.md",
-        },
-      },
-    ],
-  },
+// 固定路由
+const fixedRoutes = [
+  { path: "/" },
   {
     path: "/:pathMatch(.*)*",
-    redirect: "/chapter01/basic/hello-cesium",
+    component: () => import("../views/NotFound.vue"),
+    name: "NotFound",
   },
 ];
 
+function generateName(value) {
+  const upperCase = (v) => v.charAt(0).toUpperCase() + v.slice(1);
+  return value.split("/").filter(Boolean).map(upperCase).join("");
+}
+
+function replacePath(source, target, replace) {
+  return source.replace(target, "").replace(replace, "").replace(/\/$/, "");
+}
+
+function getParentPath(source) {
+  const lastSlashIndex = source.lastIndexOf("/");
+  return lastSlashIndex <= 0 ? "" : source.substring(0, lastSlashIndex);
+}
+
+function getChildPath(currPath, parentPath) {
+  return parentPath === "" ? currPath : currPath.replace(parentPath + "/", "");
+}
+
+function getRedirectPath(routes) {
+  if (!Array.isArray(routes) || routes.length === 0) return null;
+  const firstValid = routes.find((r) => r.path && typeof r.path === "string");
+  return firstValid ? firstValid.path.replace(/\/$/, "") : null;
+}
+
+function replaceSuffix(source, target, replace) {
+  return source.replace(target, replace);
+}
+
+// 根路由重定向路径
+let rootRedirectPath = "";
+
+function generateDynamicRoutes() {
+  const topLevelRoutes = [];
+  const routeMap = {};
+
+  const indexJsFiles = import.meta.glob("../views/**/index.js", {
+    eager: true,
+  });
+  const indexVueFiles = import.meta.glob("../views/**/index.vue");
+
+  const routeList = [];
+  for (const jsPath in indexJsFiles) {
+    const vuePath = replaceSuffix(jsPath, /index\.js$/, "index.vue");
+    const hasVue = !!indexVueFiles[vuePath];
+    const routeConfig = indexJsFiles[jsPath]?.default || {};
+    const fullPath = replacePath(jsPath, "../views", /index\.js$/);
+    const parentPath = getParentPath(fullPath);
+    const depth = fullPath.split("/").filter(Boolean).length;
+
+    routeList.push({
+      fullPath,
+      parentPath,
+      hasVue,
+      routeConfig,
+      depth,
+      vuePath: hasVue ? vuePath : null,
+    });
+  }
+
+  routeList.sort((a, b) => a.depth - b.depth);
+
+  for (const item of routeList) {
+    const { fullPath, parentPath, hasVue, routeConfig, vuePath } = item;
+    const routeName = generateName(fullPath);
+    const childPath = getChildPath(fullPath, parentPath);
+
+    if (!hasVue) {
+      const currentRoute = {
+        path: childPath,
+        name: routeName,
+        meta: routeConfig.meta || {},
+        children: [],
+      };
+      if (routeConfig.layout) {
+        currentRoute["component"] = routeConfig.layout;
+      }
+
+      routeMap[fullPath] = currentRoute;
+
+      if (parentPath === "") {
+        topLevelRoutes.push(currentRoute);
+      } else {
+        const parentRoute = routeMap[parentPath];
+        if (parentRoute) parentRoute.children.push(currentRoute);
+      }
+    }
+
+    if (hasVue) {
+      const parentRoute = routeMap[parentPath];
+      if (!parentRoute) continue;
+
+      const childRoute = {
+        path: childPath,
+        name: routeName,
+        component: indexVueFiles[vuePath],
+        meta: routeConfig.meta || {},
+        children: [],
+      };
+
+      parentRoute.children.push(childRoute);
+    }
+  }
+
+  function setRedirect(route) {
+    if (route.children && route.children.length > 0) {
+      const redirectPath = getRedirectPath(route.children);
+      if (redirectPath) {
+        route.redirect =
+          route.path === "" ? redirectPath : `${route.path}/${redirectPath}`;
+        if (!rootRedirectPath && route.path !== "")
+          rootRedirectPath = route.redirect;
+      }
+      route.children.forEach((child) => setRedirect(child));
+    }
+  }
+
+  topLevelRoutes.forEach((route) => setRedirect(route));
+
+  return topLevelRoutes;
+}
+
+const dynamicRoutes = generateDynamicRoutes();
+fixedRoutes[0].redirect = rootRedirectPath;
+
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [...fixedRoutes, ...dynamicRoutes],
+  scrollBehavior: () => ({ top: 0 }),
 });
 
 export default router;

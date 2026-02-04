@@ -7,7 +7,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import * as Cesium from "cesium";
-import CircleSpiralMaterialProperty from "./js/circleSpiralMaterialProperty.js";
+import CircleSpiralMaterialProperty from "../js/circleSpiralMaterialProperty.js";
 
 const cesiumContainer = ref(null);
 let viewer = null;

@@ -4,42 +4,14 @@
     <el-aside :width="isNavCollapsed ? '64px' : '240px'" class="left-aside">
       <div class="logo-area">
         <el-icon class="logo-icon"><MapLocation /></el-icon>
-        <span v-if="!isNavCollapsed">Cesium 学习</span>
+        <span v-if="!isNavCollapsed">学习笔记</span>
       </div>
 
-      <el-menu
-        :default-active="activeMenu"
+      <menu-container
         class="nav-menu"
-        :collapse="isNavCollapsed"
-        background-color="#304156"
-        text-color="#bfcbd9"
-        active-text-color="#409EFF"
-        router
-      >
-        <!-- 动态生成菜单 -->
-        <template v-for="group in groupedRoutes" :key="group.key">
-          <el-sub-menu :index="group.key">
-            <template #title>
-              <span>{{ group.name }}</span>
-            </template>
-
-            <el-menu-item
-              v-for="route in group.routes"
-              :key="route.path"
-              :index="'/' + route.path"
-            >
-              <span>{{ route.meta?.title || route.name }}</span>
-            </el-menu-item>
-          </el-sub-menu>
-        </template>
-      </el-menu>
-
-      <div class="collapse-btn" @click="toggleNav">
-        <el-icon>
-          <Fold v-if="!isNavCollapsed" />
-          <Expand v-else />
-        </el-icon>
-      </div>
+        v-model="isNavCollapsed"
+        :menu-data="menus"
+      />
     </el-aside>
 
     <!-- 右侧内容区 -->
@@ -49,12 +21,12 @@
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item v-if="currentRouteMeta?.chapter">
-              {{ currentRouteMeta.chapter }}
+            <el-breadcrumb-item
+              v-for="(item, index) in breadcrumbItems"
+              :key="index"
+            >
+              {{ item.meta?.title }}
             </el-breadcrumb-item>
-            <el-breadcrumb-item>{{
-              currentRouteMeta?.title || "学习内容"
-            }}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
 
@@ -125,17 +97,23 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, defineAsyncComponent, onMounted } from "vue";
+import {
+  ref,
+  computed,
+  watch,
+  defineAsyncComponent,
+  onMounted,
+  shallowRef,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
   MapLocation,
   Document,
-  Fold,
-  Expand,
   DocumentChecked,
   Notebook,
   ArrowRight,
 } from "@element-plus/icons-vue";
+import MenuContainer from "./MenuContainer.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -143,46 +121,43 @@ const router = useRouter();
 // 状态
 const isNavCollapsed = ref(false);
 const isNotesCollapsed = ref(false);
-const currentMdComponent = ref(null);
+const currentMdComponent = shallowRef(null);
 
 // 计算属性
 const activeMenu = computed(() => route.path);
-const currentRouteMeta = computed(() => route.meta);
 
-// 从路由配置中提取子路由
-const childRoutes = computed(() => {
-  const rootRoute = router.options.routes.find((r) => r.path === "/");
-  if (rootRoute && rootRoute.children) {
-    return rootRoute.children.filter((r) => r.path && r.meta?.chapter);
-  }
-  return [];
+const menus = computed(() => {
+  return router.options.routes.filter((r) => r.path && r.meta);
 });
 
-// 按章节分组路由
-const groupedRoutes = computed(() => {
-  const groups = {};
+const breadcrumbItems = computed(() => {
+  const items = [];
+  const pathSegments = activeMenu.value.split("/").filter(Boolean);
 
-  childRoutes.value.forEach((r) => {
-    const chapter = r.meta?.chapter || "未分类";
-    if (!groups[chapter]) {
-      groups[chapter] = [];
+  const findRoute = (routes, index) => {
+    if (index >= pathSegments.length) {
+      return true;
     }
-    groups[chapter].push(r);
-  });
 
-  return Object.entries(groups).map(([chapterName, routes], index) => {
-    return {
-      key: `chapter_${index}`,
-      name: chapterName,
-      routes: routes,
-    };
-  });
+    for (const route of routes) {
+      if ([route.path].some((i) => i.includes(pathSegments[index]))) {
+        items.push({
+          meta: route.meta,
+        });
+
+        if (route.children) {
+          return findRoute(route.children, index + 1);
+        }
+        return true;
+      }
+    }
+    return false;
+  };
+
+  findRoute(menus.value, 0);
+
+  return items;
 });
-
-// 切换导航栏
-const toggleNav = () => {
-  isNavCollapsed.value = !isNavCollapsed.value;
-};
 
 // 切换笔记区域
 const toggleNotes = () => {
@@ -197,17 +172,9 @@ const loadMarkdown = async (mdPath) => {
   }
 
   try {
-    const modules = import.meta.glob("/src/docs/**/*.md");
-    const fullPath = `/src/docs/${mdPath}`;
-
-    if (modules[fullPath]) {
-      const mod = await modules[fullPath]();
-      currentMdComponent.value = defineAsyncComponent(() =>
-        Promise.resolve(mod.default),
-      );
-    } else {
-      currentMdComponent.value = null;
-    }
+    currentMdComponent.value = defineAsyncComponent({
+      loader: mdPath,
+    });
   } catch (error) {
     currentMdComponent.value = null;
   }
