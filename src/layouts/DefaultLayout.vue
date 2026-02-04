@@ -2,7 +2,7 @@
  * @Author: Himmeltala zhengrenfu@outlook.com
  * @Date: 2026-02-04 18:54:51
  * @LastEditors: Himmeltala zhengrenfu@outlook.com
- * @LastEditTime: 2026-02-04 23:16:25
+ * @LastEditTime: 2026-02-04 23:40:08
  * @Description: 默认布局
 -->
 <template>
@@ -12,11 +12,11 @@
         <el-icon class="logo-icon"><MapLocation /></el-icon>
         <span v-if="!isNavCollapse">学习笔记</span>
       </div>
-      <Menu class="nav-menu" v-model="isNavCollapse" />
+      <MlMenu class="nav-menu" v-model="isNavCollapse" />
     </el-aside>
     <div class="right-container">
       <el-header class="header">
-        <Breadcrumb />
+        <MlBreadcrumb />
         <div class="header-actions">
           <el-button
             type="primary"
@@ -43,7 +43,7 @@
           </router-view>
         </el-main>
         <transition name="slide-fade">
-          <Note v-model:collapse="isNoteCollapse" />
+          <MlNote v-model:collapse="isNoteCollapse" />
         </transition>
       </div>
     </div>
@@ -61,9 +61,9 @@ import {
   Sunny,
 } from '@element-plus/icons-vue'
 
-import Breadcrumb from './Breadcrumb.vue'
-import Menu from './Menu.vue'
-import Note from './Note.vue'
+import MlBreadcrumb from './MlBreadcrumb.vue'
+import MlMenu from './MlMenu.vue'
+import MlNote from './MlNote.vue'
 
 const isDarkMode = ref(true)
 const isNavCollapse = ref(false)

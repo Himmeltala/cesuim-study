@@ -6,13 +6,7 @@
  * @Description: 学习笔记
 -->
 <script setup lang="js">
-import {
-  computed,
-  defineAsyncComponent,
-  defineProps,
-  shallowRef,
-  watch,
-} from 'vue'
+import { computed, defineAsyncComponent, shallowRef, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { ArrowRight, Notebook } from '@element-plus/icons-vue'

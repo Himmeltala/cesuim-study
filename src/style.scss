@@ -11,3 +11,17 @@ html,
 body {
   height: 100%;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--el-fill-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--el-text-color-regular);
+  border-radius: 3px;
+}
