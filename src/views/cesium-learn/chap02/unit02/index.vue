@@ -266,11 +266,6 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  label {
-    font-size: 14px;
-    color: #606266;
-  }
 }
 
 .info-panel {
@@ -287,10 +282,5 @@ onUnmounted(() => {
 
 .info-content {
   font-size: 14px;
-
-  p {
-    margin: 4px 0;
-    color: #606266;
-  }
 }
 </style>

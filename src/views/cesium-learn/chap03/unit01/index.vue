@@ -5,7 +5,6 @@
     <el-card class="control-panel">
       <template #header>
         <div class="control-header">
-          <el-icon><Plane /></el-icon>
           <span>控制面板</span>
         </div>
       </template>
@@ -611,12 +610,10 @@ onUnmounted(() => {
   font-weight: bold;
   margin-bottom: 8px;
   font-size: 13px;
-  color: #606266;
 }
 
 .param-item .unit {
   font-size: 12px;
-  color: #909399;
 }
 
 .status-info {

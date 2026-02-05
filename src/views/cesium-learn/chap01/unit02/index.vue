@@ -158,10 +158,5 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  label {
-    font-size: 14px;
-    color: #606266;
-  }
 }
 </style>

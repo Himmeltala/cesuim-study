@@ -311,11 +311,6 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  label {
-    font-size: 14px;
-    color: #606266;
-  }
 }
 
 .legend-panel {
@@ -341,7 +336,6 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #606266;
 }
 
 .color-dot {
