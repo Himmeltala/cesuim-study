@@ -2,17 +2,17 @@
  * @Author: Himmeltala zhengrenfu@outlook.com
  * @Date: 2026-02-04 18:54:51
  * @LastEditors: Himmeltala zhengrenfu@outlook.com
- * @LastEditTime: 2026-02-04 23:57:27
+ * @LastEditTime: 2026-02-05 11:26:01
  * @Description: 默认布局
 -->
 <template>
   <div class="layout-container">
-    <el-aside :width="isNavCollapse ? '64px' : '240px'" class="left-container">
+    <el-aside :width="isNavCollapse ? '60px' : '240px'" class="left-container">
       <div class="logo-area">
         <el-icon class="logo-icon"><MapLocation /></el-icon>
         <span v-if="!isNavCollapse">学习笔记</span>
       </div>
-      <MlMenu class="nav-menu" v-model="isNavCollapse" />
+      <MlMenu class="nav-menu" v-model:collapse="isNavCollapse" />
     </el-aside>
     <div class="right-container">
       <el-header class="header">
@@ -107,8 +107,6 @@ function handleDarkModeChange() {
 
 .nav-menu {
   flex: 1;
-  border-right: none;
-  overflow-y: auto;
 }
 
 .collapse-btn {
@@ -128,7 +126,7 @@ function handleDarkModeChange() {
 }
 
 .header {
-  height: 56px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;

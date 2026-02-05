@@ -25,3 +25,29 @@ body {
   background: var(--el-text-color-regular);
   border-radius: 3px;
 }
+
+a {
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  color: var(--el-text-color-regular);
+}
+
+a:link {
+  text-decoration: none;
+  color: var(--el-text-color-regular);
+}
+
+a:visited {
+  text-decoration: none;
+  color: var(--el-text-color-regular);
+}
+
+a:hover {
+  text-decoration: none;
+  color: var(--el-color-primary);
+}
+
+a:active {
+  text-decoration: none;
+  color: var(--el-text-color-regular);
+}
