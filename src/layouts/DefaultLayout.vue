@@ -2,7 +2,7 @@
  * @Author: Himmeltala zhengrenfu@outlook.com
  * @Date: 2026-02-04 18:54:51
  * @LastEditors: Himmeltala zhengrenfu@outlook.com
- * @LastEditTime: 2026-02-05 11:26:01
+ * @LastEditTime: 2026-02-07 22:45:53
  * @Description: 默认布局
 -->
 <template>
@@ -10,7 +10,7 @@
     <el-aside :width="isNavCollapse ? '60px' : '240px'" class="left-container">
       <div class="logo-area">
         <el-icon class="logo-icon"><MapLocation /></el-icon>
-        <span v-if="!isNavCollapse">学习笔记</span>
+        <span class="logo-text" v-if="!isNavCollapse">学习笔记</span>
       </div>
       <MlMenu class="nav-menu" v-model:collapse="isNavCollapse" />
     </el-aside>
@@ -102,7 +102,10 @@ function handleDarkModeChange() {
 
 .logo-icon {
   font-size: 24px;
-  margin-right: 8px;
+}
+
+.logo-text {
+  margin-left: 8px;
 }
 
 .nav-menu {
