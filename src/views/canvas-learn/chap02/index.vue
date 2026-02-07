@@ -1,5 +1,15 @@
+<!--
+ * @Author: Himmeltala zhengrenfu@outlook.com
+ * @Date: 2026-02-04 18:55:48
+ * @LastEditors: Himmeltala zhengrenfu@outlook.com
+ * @LastEditTime: 2026-02-07 23:04:05
+ * @FilePath: \cesium-study\src\views\canvas-learn\chap02\index.vue
+ * @Description: 画布学习-第二节
+-->
 <script setup lang="js">
 import { onMounted } from 'vue'
+
+import CanvasLearnLayout from '@/layouts/canvas-learn/CanvasLearnLayout.vue'
 
 onMounted(() => {
   const canvas = document.getElementById('tutorial')
@@ -36,12 +46,8 @@ function draw2(ctx) {
 </script>
 
 <template>
-  <canvas id="tutorial" width="150" height="150"></canvas>
-  <canvas id="tutorial2" width="150" height="150"></canvas>
+  <CanvasLearnLayout>
+    <canvas id="tutorial" width="150" height="150"></canvas>
+    <canvas id="tutorial2" width="150" height="150"></canvas>
+  </CanvasLearnLayout>
 </template>
-
-<style scoped lang="scss">
-canvas {
-  border: 1px solid black;
-}
-</style>

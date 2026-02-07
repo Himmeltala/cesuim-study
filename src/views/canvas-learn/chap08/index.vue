@@ -1,24 +1,32 @@
+<!--
+ * @Author: Himmeltala zhengrenfu@outlook.com
+ * @Date: 2026-02-04 18:55:48
+ * @LastEditors: Himmeltala zhengrenfu@outlook.com
+ * @LastEditTime: 2026-02-07 23:07:40
+ * @FilePath: \cesium-study\src\views\canvas-learn\chap08\index.vue
+ * @Description: 
+-->
 <template>
-  <div class="canvas-pixel-demo">
-    <div class="canvas-box">
-      <canvas ref="canvasRef" width="800" height="500"></canvas>
-    </div>
-    <div class="btn-group">
+  <CanvasLearnLayout>
+    <canvas ref="canvasRef" width="800" height="500"></canvas>
+    <template #buttons>
       <el-button @click="drawOriginal">绘制原图</el-button>
-      <el-button type="primary" @click="applyGray">灰度滤镜</el-button>
-      <el-button type="success" @click="applyInvert">反色滤镜</el-button>
-      <el-button type="warning" @click="applyBlur">简单模糊</el-button>
-      <el-button type="info" @click="applyReplaceColor">红换蓝</el-button>
-      <el-button type="danger" @click="resetCanvas">重置画布</el-button>
+      <el-button @click="applyGray">灰度滤镜</el-button>
+      <el-button @click="applyInvert">反色滤镜</el-button>
+      <el-button @click="applyBlur">简单模糊</el-button>
+      <el-button @click="applyReplaceColor">红换蓝</el-button>
+      <el-button @click="resetCanvas">重置画布</el-button>
       <el-button @click="clearCanvas">清空画布</el-button>
-    </div>
-  </div>
+    </template>
+  </CanvasLearnLayout>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
 
 import { ElButton } from 'element-plus'
+
+import CanvasLearnLayout from '@/layouts/canvas-learn/CanvasLearnLayout.vue'
 
 const canvasRef = ref(null)
 let ctx = null
@@ -171,31 +179,3 @@ const clearCanvas = () => {
   ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
 }
 </script>
-
-<style scoped>
-.canvas-pixel-demo {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.canvas-box {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin: 20px 0;
-  background: #f9fafb;
-}
-
-canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-}
-</style>

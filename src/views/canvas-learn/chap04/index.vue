@@ -1,9 +1,15 @@
+<!--
+ * @Author: Himmeltala zhengrenfu@outlook.com
+ * @Date: 2026-02-04 18:55:48
+ * @LastEditors: Himmeltala zhengrenfu@outlook.com
+ * @LastEditTime: 2026-02-07 23:04:25
+ * @FilePath: \cesium-study\src\views\canvas-learn\chap04\index.vue
+ * @Description: 画布学习-第四节
+-->
 <template>
-  <div class="canvas-image-demo">
-    <div class="canvas-box">
-      <canvas ref="canvasRef" width="800" height="500"></canvas>
-    </div>
-    <div class="btn-group">
+  <CanvasLearnLayout>
+    <canvas ref="canvasRef" width="800" height="500"></canvas>
+    <template #buttons>
       <el-button @click="drawBasicImage">基础绘制图片</el-button>
       <el-button @click="drawScaleImage">缩放绘制</el-button>
       <el-button @click="drawSliceImage">切片绘制（抠图）</el-button>
@@ -11,14 +17,16 @@
       <el-button @click="drawAlphaImage">半透明绘制</el-button>
       <el-button @click="saveCanvasImage">保存画布为图片</el-button>
       <el-button @click="clearCanvas">清空画布</el-button>
-    </div>
-  </div>
+    </template>
+  </CanvasLearnLayout>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
 
 import { ElButton } from 'element-plus'
+
+import CanvasLearnLayout from '@/layouts/canvas-learn/CanvasLearnLayout.vue'
 
 const canvasRef = ref(null)
 let ctx = null
@@ -121,31 +129,3 @@ const clearCanvas = () => {
   ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
 }
 </script>
-
-<style scoped>
-.canvas-image-demo {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.canvas-box {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin: 20px 0;
-  background: #f9fafb;
-}
-
-canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-}
-</style>

@@ -1,27 +1,31 @@
+<!--
+ * @Author: Himmeltala zhengrenfu@outlook.com
+ * @Date: 2026-02-04 18:55:48
+ * @LastEditors: Himmeltala zhengrenfu@outlook.com
+ * @LastEditTime: 2026-02-07 23:06:42
+ * @FilePath: \cesium-study\src\views\canvas-learn\chap07\index.vue
+ * @Description: 
+-->
 <template>
-  <div class="canvas-animation-demo">
-    <div class="canvas-box">
-      <canvas ref="canvasRef" width="800" height="500"></canvas>
-    </div>
-    <div class="btn-group">
-      <el-button type="primary" @click="startMoveAnimation">位移动画</el-button>
-      <el-button type="success" @click="startRotateAnimation"
-        >旋转动画</el-button
-      >
-      <el-button type="warning" @click="startScaleAnimation"
-        >缩放动画</el-button
-      >
-      <el-button type="info" @click="startMultiAnimation">多元素动画</el-button>
-      <el-button type="danger" @click="stopAnimation">停止动画</el-button>
+  <CanvasLearnLayout>
+    <canvas ref="canvasRef" width="800" height="500"></canvas>
+    <template #buttons>
+      <el-button @click="startMoveAnimation">位移动画</el-button>
+      <el-button @click="startRotateAnimation"> 旋转动画 </el-button>
+      <el-button @click="startScaleAnimation"> 缩放动画 </el-button>
+      <el-button @click="startMultiAnimation">多元素动画</el-button>
+      <el-button @click="stopAnimation">停止动画</el-button>
       <el-button @click="clearCanvas">清空画布</el-button>
-    </div>
-  </div>
+    </template>
+  </CanvasLearnLayout>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 
 import { ElButton } from 'element-plus'
+
+import CanvasLearnLayout from '@/layouts/canvas-learn/CanvasLearnLayout.vue'
 
 const canvasRef = ref(null)
 let ctx = null
@@ -171,31 +175,3 @@ const drawMultiAnimation = () => {
   animationId = requestAnimationFrame(drawMultiAnimation)
 }
 </script>
-
-<style scoped>
-.canvas-animation-demo {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.canvas-box {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin: 20px 0;
-  background: #f9fafb;
-}
-
-canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-}
-</style>

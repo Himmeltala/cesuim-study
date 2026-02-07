@@ -1,5 +1,15 @@
+<!--
+ * @Author: Himmeltala zhengrenfu@outlook.com
+ * @Date: 2026-02-04 18:55:48
+ * @LastEditors: Himmeltala zhengrenfu@outlook.com
+ * @LastEditTime: 2026-02-07 23:04:18
+ * @FilePath: \cesium-study\src\views\canvas-learn\chap03\index.vue
+ * @Description: 画布学习-第三节
+-->
 <script setup lang="js">
 import { onMounted, ref } from 'vue'
+
+import CanvasLearnLayout from '@/layouts/canvas-learn/CanvasLearnLayout.vue'
 
 const textWidth = ref(0)
 
@@ -48,14 +58,11 @@ function measureText(ctx, text) {
 </script>
 
 <template>
-  <canvas id="tutorial" width="300" height="300"></canvas>
-  <canvas id="tutorial2" width="300" height="300"></canvas>
-  <canvas id="tutorial3" width="500" height="300"></canvas>
-  <div>“你好世界”的文本宽度：{{ textWidth }}px</div>
+  <CanvasLearnLayout>
+    <canvas id="tutorial" width="300" height="300"></canvas>
+    <canvas id="tutorial2" width="300" height="300"></canvas>
+    <canvas id="tutorial3" width="500" height="300"></canvas>
+    <div class="text-black">“你好世界”的文本宽度：{{ textWidth }}px</div>
+    <template #buttons></template>
+  </CanvasLearnLayout>
 </template>
-
-<style scoped lang="scss">
-canvas {
-  border: 1px solid black;
-}
-</style>
